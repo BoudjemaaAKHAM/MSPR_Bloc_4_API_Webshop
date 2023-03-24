@@ -21,10 +21,6 @@ Documentation des APIs du projet MSPR 4. 🚀
 
 You will be able to **read customers**.
 
-## Orders
-
-You will be able to **read orders**.
-
 ## Products
 
 You will be able to **read products**.
@@ -35,10 +31,6 @@ tags_metadata = [
     {
         "name": "customers",
         "description": "Manage customers.",
-    },
-    {
-        "name": "orders",
-        "description": "Manage orders.",
     },
     {
         "name": "products",
