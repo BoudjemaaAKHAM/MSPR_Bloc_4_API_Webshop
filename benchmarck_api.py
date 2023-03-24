@@ -152,7 +152,7 @@ def create_customer(customer: Customer):
 
 @app.delete("/customers/{customer_id}")
 def delete_customer(customer_id: int):
-    response = requests.delete(API + "/" + str(customer_id))
+    response = requests.delete(API_CLIENT + "/" + str(customer_id))
     return response.json()
 
 
