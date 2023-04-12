@@ -1,4 +1,4 @@
-FROM python:3.10-alpine
+# FROM python:3.10-alpine
 # FROM python:3.10
 
 # Ouvrir le port 1883 pour les connexions MQTT
@@ -47,16 +47,31 @@ FROM python:3.10-alpine
 # CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8081"]
 
 #-----------------------------------
-
+FROM python:3.10-alpine
 # WORKDIR /usr/src/app
-WORKDIR /api
+WORKDIR /api/src
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+EXPOSE 9001
+
 # CMD [ "python", "./app.py" ]
-CMD ["uvicorn", "app:app", "--reload", "--host", "0.0.0.0", "--port", "9001"]
+CMD ["uvicorn", "src.app:app", "--reload", "--host", "0.0.0.0", "--port", "9001"] 
+# parce que il le demare sur linux on laisse  a 0.0.0.0
 
 #"192.168.65.4"
+
+#-----------------------------------
+
+# FROM python:3.10
+
+# WORKDIR /backend
+
+# COPY requirements.txt .
+# RUN pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt
+
+# EXPOSE 9001
+# CMD ["uvicorn", "src.app:app", "--reload", "--host", "0.0.0.0", "--port", "9001"]

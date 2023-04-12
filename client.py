@@ -125,21 +125,21 @@ import time
 
 # create("fillola", "dolela", "fil@dolllle.com")
 # # create()
-#-------------------------------------------------------------
-# ce client doit etre chez rim-nat # il envoie des données dans la bdd request
-def createFromRimnat(userid, service, input, statuts, step): #name, fullname, addresses
-    data = {'userid' : userid, 'service' : service, 'input' : input, 'statuts' : statuts, 'step' : step}
-    url = "http://127.0.0.1:8082/api/v1.0/queue/"
-    reponse = requests.post(url, params=data) # , timeout=5
-    print(reponse)
-    dico = reponse.json() # je le determine en dictionnaire 
-    # print(dico['statuts'])
-    # print("recup de l'id",dico['id'])
-    # print("recup de l'userid",dico['userid'])
-    print(dico)
+# #-------------------------------------------------------------
+# # ce client doit etre chez rim-nat # il envoie des données dans la bdd request
+# def createFromRimnat(userid, service, input, statuts, step): #name, fullname, addresses
+#     data = {'userid' : userid, 'service' : service, 'input' : input, 'statuts' : statuts, 'step' : step}
+#     url = "http://127.0.0.1:8082/api/v1.0/queue/"
+#     reponse = requests.post(url, params=data) # , timeout=5
+#     print(reponse)
+#     dico = reponse.json() # je le determine en dictionnaire 
+#     # print(dico['statuts'])
+#     # print("recup de l'id",dico['id'])
+#     # print("recup de l'userid",dico['userid'])
+#     print(dico)
     
 
-createFromRimnat(228, "mnt-diff", "adresse/a/adresse/b", "succes", 0)
+# createFromRimnat(228, "mnt-diff", "adresse/a/adresse/b", "succes", 0)
 
 # time.sleep(5)
 
@@ -198,24 +198,37 @@ createFromRimnat(228, "mnt-diff", "adresse/a/adresse/b", "succes", 0)
 # createFromMntdiff("mnt-diff", "txt", "adresse/a/adresse/C", 17)
 
 
-#-------------------------test pour table association------------------------------------
-# ce client doit etre chez mnt-diff # il envoie des données dans la bdd output
-def createFromMntdiff(producer, types, path, size, requestId): #name, fullname, addresses
-    data = {'producer' : producer, 'types' : types, 'path' : path, 'size' : size, 'requestId' : requestId}
-    url = "http://127.0.0.1:8082/api/v1.0/queue/mnt-diff"
-    reponse = requests.post(url, params=data) # , timeout=5 , verify=False
-    print(reponse)
-    # print(reponse.text)
-    # # dico = reponse.json() # je le determine en dictionnaire 
-    print(reponse.content)
-    # data = json.loads(reponse.text)
-    # print(data)
+# #-------------------------test pour table association------------------------------------
+# # ce client doit etre chez mnt-diff # il envoie des données dans la bdd output
+# def createFromMntdiff(producer, types, path, size, requestId): #name, fullname, addresses
+#     data = {'producer' : producer, 'types' : types, 'path' : path, 'size' : size, 'requestId' : requestId}
+#     url = "http://127.0.0.1:8082/api/v1.0/queue/mnt-diff"
+#     reponse = requests.post(url, params=data) # , timeout=5 , verify=False
+#     print(reponse)
+#     # print(reponse.text)
+#     # # dico = reponse.json() # je le determine en dictionnaire 
+#     print(reponse.content)
+#     # data = json.loads(reponse.text)
+#     # print(data)
 
-    # print(dico['id'])
-    # print(dico['producer'])
-    # print(dico['types'])
-    # print(dico['path'])
-    # print(dico['size'])
+#     # print(dico['id'])
+#     # print(dico['producer'])
+#     # print(dico['types'])
+#     # print(dico['path'])
+#     # print(dico['size'])
     
 
-createFromMntdiff("mnt-diff", "txt", "adresse/a/adresse/C", 15, 226)
+# createFromMntdiff("mnt-diff", "txt", "adresse/a/adresse/C", 15, 226)
+
+#-----------------version 1 get-----------------------------------------
+# #version get
+def read(): 
+    url = "http://127.0.0.1:9001/read"
+    # url = "http://192.168.65.4:9001/read"
+    reponse = requests.get(url)
+    print(reponse)
+    print(reponse.text)
+    #pour ouvrir l'url dans une page web
+    # webbrowser.open(url)
+
+read()
