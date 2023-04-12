@@ -8,6 +8,8 @@ demarage du conteneur :
 <!-- docker run -it --net=host --name api api:1.0.0 -->
 docker run -it -p 9001:9001 --name api api:1.0.0
 
+il faut aussi penser a mettre localhost ou 127.0.0.1 car avec windows cela ne marche pas forcement avec 0.0.0.0
+
 <!-- docker run --detach --publish 8080:80 --name api api:1.0.0 -->
 
 <!-- docker run --detach --publish 8081 --name api api:1.0.0 -->

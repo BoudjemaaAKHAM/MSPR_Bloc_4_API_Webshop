@@ -1,56 +1,3 @@
-# from fastapi import FastAPI
-# from fastapi.responses import JSONResponse
-# import json
-# import uvicorn
-
-# # #debut de FastAPI
-# app = FastAPI()
-
-# ###############################
-# # toutes les commandes en get #
-# ###############################
-
-# # home
-# @app.get("/hello")
-# async def hello_world():
-#     print("hello print")
-#     return  {"hello":"world"} # print("hello world")
-
-# ##########################
-# # pour lancer le serveur #
-# ##########################
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=9001) #"127.0.0.1"
-
-#------------------------------------------------------------------------
-
-# import uvicorn
-
-# from typing import Union
-
-# from fastapi import FastAPI
-
-# app = FastAPI()
-
-# @app.get("/")
-# def read_root():
-#     return {"Hello": "World"}
-
-# @app.get("/read")
-# def read_root():
-#     return {"Hello": "World"}
-
-
-# @app.get("/items/{item_id}")
-# def read_item(item_id: int, q: Union[str, None] = None):
-#     return {"item_id": item_id, "q": q}
- 
-# @app.get("/items/{item_id}")
-# def read_item(item_id: int, q: str = None):
-#     return {"item_id": item_id, "q": q}
-
-
-#--------------------------------------------------------------
 from fastapi import FastAPI, Depends
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
@@ -68,7 +15,7 @@ API_PRODUCT = "https://615f5fb4f7254d0017068109.mockapi.io/api/v1/products"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 description = """
-Documentation des APIs du projet MSPR 4. 
+Documentation des APIs du projet MSPR 4. 🚀
 ## Customers
 You will be able to **read customers**.
 ## Products
@@ -141,29 +88,17 @@ def get_customers():
     # faire des conditions sur l'accès à l'api
     # renvoyer une erreur si l'accès n'est pas autorisé
     # renvoyer la réponse si l'accès est autorisé
-    
     return response.json()
-    
+
 
 @app.get("/customers/{customer_id}", tags=["customers"])
 def get_customer(customer_id: int):
     """
     Get a customer by id
     """
+
     response = requests.get(API_CLIENT + "/" + str(customer_id))
-    text = response.text
-    data = json.loads(text)
-    recupData = []
-    reqName = data['name']
-    recupData.append(reqName)
-    print(recupData[0])
-    name = recupData[0]
-    reqId = data['id']
-    recupData.append(reqId)
-    print(recupData[1])
-    id = recupData[1]
-    # return response.json()
-    return {"id": id, "name": name}
+    return response.json()
 
 
 @app.get("/customers/{customer_id}/orders", tags=["customers"])
@@ -211,11 +146,3 @@ def delete_customer(customer_id: int):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app)
-
-#-------------------------------------------------------------------
-# ##########################
-# # pour lancer le serveur #
-# ##########################
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=3001) #"127.0.0.1"
- 

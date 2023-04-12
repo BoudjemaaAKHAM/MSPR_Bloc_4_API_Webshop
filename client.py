@@ -223,12 +223,46 @@ import time
 #-----------------version 1 get-----------------------------------------
 # #version get
 def read(): 
-    url = "http://127.0.0.1:9001/read"
+    # url = "http://127.0.0.1:9001/read"
+    url = "http://127.0.0.1:9001/customers/7" #customers/7
     # url = "http://192.168.65.4:9001/read"
     reponse = requests.get(url)
     print(reponse)
     print(reponse.text)
-    #pour ouvrir l'url dans une page web
-    # webbrowser.open(url)
+    text = reponse.text
+    data = json.loads(text)
+    # customers = data[1]
+    # print(customers['name'])
+    # id = customers['id']
+    # print(id)
+
+    print(data['name'])
+    id = data['id']
+    print(id)
+
 
 read()
+
+# -------------------------
+# test request base en get:
+# -------------------------
+
+# url = requests.get("https://jsonplaceholder.typicode.com/posts")
+# text = url.text
+# print(type(text))
+
+# data = json.loads(text)
+# print(type(data))
+
+# user = data[1] # position sur les donnée du json
+# print(user['userId'])
+
+# id = user['id']
+# print(id)
+
+# title = user['title']
+# print(title)
+
+# body = user['body']
+# print(body)
+
