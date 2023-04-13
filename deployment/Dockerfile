@@ -9,6 +9,6 @@ RUN pip install -e .
 # copy only the api folder to the container
 COPY webshopapi webshopapi
 
-EXPOSE 80
+EXPOSE 81
 
-CMD ["uvicorn", "webshopapi.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "webshopapi.main:app", "--host", "0.0.0.0", "--port", "81"]

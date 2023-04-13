@@ -155,5 +155,5 @@ def delete_customer(customer_id: int):
 
 if __name__ == "__main__":
     #logging.basicConfig(filename='server.log', level=logging.INFO)
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="debug", access_log=True)
+    uvicorn.run(app, host="0.0.0.0", port=81, log_level="debug", access_log=True)
     #uvicorn.run(app)
