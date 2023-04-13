@@ -4,22 +4,40 @@ Repo git pour la mise en situation professionnelle reconstituée du bloc de comp
 
 ## Constitution du groupe :
 
+- Adel Ould Ouelhadj
+- Boudjemaa AKHAM
+- Guillaume GAY
+- Jean-Daniel SPADAZZI
+- Sébastien GLORIES
+
 # utilisation de l'application
 
 ## Prérequis
 
-```
-sh
+```sh
 pip install -r requirements.txt
 ```
 
 ## Lancer l'application
 
-```
-sh
-python benchmark_api.py
+```sh
+python -m api.main
 ```
 
 ## Les APIs sont accessibles à l'adresse suivante :
 
-http://127.0.0.1:8000/docs
+http://localhost:8000/docs
+
+## Docker
+
+### Build (se mettre dans le dossier racine du projet) :
+
+```sh
+docker build -t webshop_api -f ./deployment/Dockerfile .
+```
+
+### Lance le container :
+
+```sh
+docker run -p 8000:8000 webshop_api
+```

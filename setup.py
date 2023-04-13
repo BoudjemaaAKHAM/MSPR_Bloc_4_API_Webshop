@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='webshop_api',
+    name='webshopapi',
     version='1.0.0',
     description='',
     author='',
