@@ -69,3 +69,25 @@ minikube service webshop-api
 
 ou via lens (https://k8slens.dev/) application desktop pour kubernetes
 
+#### Note
+
+pour push une image docker sur dockerhub, il faut se connecter à mon dockerhub via la commande :
+
+```sh
+docker login --username=boudjemaa
+```
+
+Saisir le token qui est dans le fichier .dockerhub_token
+
+puis créer un tag pour l'image docker :
+
+```sh
+docker tag webshop_api boudjemaa/webshop_api:latest
+```
+
+puis push l'image sur dockerhub :
+
+```sh
+docker push boudjemaa/webshop_api:latest
+```
+
