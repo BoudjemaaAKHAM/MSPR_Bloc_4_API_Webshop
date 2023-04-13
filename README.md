@@ -41,3 +41,31 @@ docker build -t webshop_api -f ./deployment/Dockerfile .
 ```sh
 docker run -p 8000:8000 webshop_api
 ```
+
+# Kubernetes
+
+## Prérequis
+
+- minikube
+- kubectl
+
+## Lancement du cluster
+
+```sh
+minikube start
+```
+
+## Déploiement de l'application
+
+```sh
+kubectl apply -f deployment/k8s-deployment.yaml
+```
+
+## Accès à l'application
+
+```sh
+minikube service webshop-api
+```
+
+ou via lens (https://k8slens.dev/) application desktop pour kubernetes
+
