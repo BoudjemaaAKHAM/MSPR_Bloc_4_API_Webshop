@@ -39,7 +39,7 @@ docker build -t webshop_api -f ./deployment/Dockerfile .
 ### Lance le container :
 
 ```sh
-docker run -p 81:81 webshop_api
+docker run -p 443:443 webshop_api
 ```
 
 # Kubernetes
