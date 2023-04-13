@@ -27,3 +27,17 @@ python -m api.main
 ## Les APIs sont accessibles à l'adresse suivante :
 
 http://localhost:8000/docs
+
+## Docker
+
+### Build (se mettre dans le dossier racine du projet) :
+
+```sh
+docker build -t webshop_api -f ./deployment/Dockerfile .
+```
+
+### Lance le container :
+
+```sh
+docker run -p 8000:8000 webshop_api
+```
