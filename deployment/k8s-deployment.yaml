@@ -21,4 +21,4 @@ spec:
           image: boudjemaa/webshop_api:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8000
+            - containerPort: 81

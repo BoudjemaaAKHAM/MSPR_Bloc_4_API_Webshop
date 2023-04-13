@@ -26,7 +26,7 @@ python -m api.main
 
 ## Les APIs sont accessibles à l'adresse suivante :
 
-http://localhost:8000/docs
+http://localhost:81/docs
 
 ## Docker
 
@@ -39,7 +39,7 @@ docker build -t webshop_api -f ./deployment/Dockerfile .
 ### Lance le container :
 
 ```sh
-docker run -p 8000:8000 webshop_api
+docker run -p 81:81 webshop_api
 ```
 
 # Kubernetes
