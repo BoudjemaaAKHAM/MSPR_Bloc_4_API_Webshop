@@ -1,10 +1,19 @@
+"""
+MSPR 4 - Webshop API
+"""
+
 import requests
 import logging
 import uvicorn
+from functools import wraps
 from typing import Annotated
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
+from fastapi.security import HTTPBearer
+from urllib.parse import unquote
+from database.database import Db
+from utilities.token_func import encode_token, decode_token
 
 # api mise à disposition dans le sujet
 # api clients
