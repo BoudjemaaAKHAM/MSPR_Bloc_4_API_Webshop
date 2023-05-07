@@ -4,13 +4,16 @@ WORKDIR /app
 
 RUN pip install --upgrade pip
 
+COPY data data
+COPY database database
+COPY webshopapi webshopapi
+COPY utilities utilities
 COPY ssl ssl
+COPY requirements.txt requirements.txt
 COPY setup.py setup.py
 
 RUN pip install -e .
 
-# copy only the api folder to the container
-COPY webshopapi webshopapi
 
 EXPOSE 81
 EXPOSE 443
