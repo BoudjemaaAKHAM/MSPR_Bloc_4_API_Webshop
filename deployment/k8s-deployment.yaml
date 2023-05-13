@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   # define deployment name and the desired namespace
   name: webshop-api
-  namespace: services
+  namespace: apis
 spec:
   # define the number of replicas. With this parameter we can scale the application.
   replicas: 1
@@ -22,3 +22,4 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 81
+            - containerPort: 443
