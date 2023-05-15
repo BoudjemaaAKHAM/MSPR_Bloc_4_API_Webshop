@@ -1,0 +1,11 @@
+uvicorn==0.22.0
+fastapi==0.95.1
+pydantic~=1.10.7
+requests==2.30.0
+setuptools==67.7.2
+pytest~=7.3.1
+PyJWT~=2.6.0
+httpx~=0.24.0
+starlette~=0.26.1
+pytest-cov==4.0.0
+coverage==7.2.3
