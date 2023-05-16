@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="13" time="0.920" timestamp="2023-05-16T22:53:38.357133" hostname="DESKTOP-VF4F0QE"><testcase classname="unittests.test_database" name="test_create_tables" time="0.004"><failure message="AssertionError: assert [('users',), ('tokens',)] == [('tokens',)]&#10;  At index 0 diff: ('users',) != ('tokens',)&#10;  Left contains one more item: ('tokens',)&#10;  Full diff:&#10;  - [('tokens',)]&#10;  + [('users',), ('tokens',)]">db = &lt;database.database.Db object at 0x0000015C93698220&gt;
+
+    def test_create_tables(db):
+        db.create_tables()
+        db.cursor.execute('SELECT name FROM sqlite_master WHERE type="table"')
+&gt;       assert db.cursor.fetchall() == [('tokens',)]
+E       AssertionError: assert [('users',), ('tokens',)] == [('tokens',)]
+E         At index 0 diff: ('users',) != ('tokens',)
+E         Left contains one more item: ('tokens',)
+E         Full diff:
+E         - [('tokens',)]
+E         + [('users',), ('tokens',)]
+
+unittests\test_database.py:18: AssertionError</failure></testcase><testcase classname="unittests.test_utilities_token_func" name="test_encode_token" time="0.003" /><testcase classname="unittests.test_utilities_token_func" name="test_decode_token" time="0.004" /><testcase classname="unittests.test_webshop_api" name="test_root" time="0.014" /><testcase classname="unittests.test_webshop_api" name="test_get_customers" time="0.005"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C93699600&gt;
+
+    def test_get_customers(client):
+        headers = {"Authorization":"Bearer admin"}
+        response = client.get("/apiws/v1/customers", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:42: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_customers_id" time="0.009"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C937ABF10&gt;
+
+    def test_get_customers_id(client):
+        headers = {"Authorization":"Bearer admin"}
+        response = client.get("/apiws/v1/customers/15", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:48: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_customers_id_by_orders" time="0.008"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C937AFE20&gt;
+
+    def test_get_customers_id_by_orders(client):
+        headers = {"Authorization":"Bearer admin"}
+        response = client.get("/apiws/v1/customers/15/orders", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:54: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_customers_id_order_id_product" time="0.012"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C937A8D30&gt;
+
+    def test_get_customers_id_order_id_product(client):
+        headers = {"Authorization":"Bearer admin"}
+        response = client.get("/apiws/v1/customers/7/orders/7/products", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:60: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_products" time="0.009"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C93756710&gt;
+
+    def test_get_products(client):
+        headers = {"Authorization":"Bearer admin"}
+        response = client.get("/apiws/v1/products", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:67: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_does_not_exist" time="0.008"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C9379E320&gt;
+
+    def test_get_product_does_not_exist(client):
+        headers = {"Authorization": "Bearer admin"}
+        response = client.get("/apiws/v1/products/1", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:74: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_exists" time="0.007"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C93699960&gt;
+
+    def test_get_product_exists(client):
+        headers = {"Authorization": "Bearer admin"}
+        response = client.get("/apiws/v1/products/5", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:82: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_stock_does_not_exist" time="0.008"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C9369B490&gt;
+
+    def test_get_product_stock_does_not_exist(client):
+        headers = {"Authorization": "Bearer admin"}
+        response = client.get("/apiws/v1/products/1/stock", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:93: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_stock_exists" time="0.007"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000015C9379C940&gt;
+
+    def test_get_product_stock_exists(client):
+        headers = {"Authorization": "Bearer admin"}
+        response = client.get("/apiws/v1/products/5/stock", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:101: AssertionError</failure></testcase></testsuite></testsuites>

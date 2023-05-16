@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 """
 MSPR 4 - Webshop API
 """
@@ -51,6 +44,19 @@ curl -X 'GET' \
 ```
 
 - The user will be able to **read customers by id** if he has a valid token.
+
+url: /apiws/v1/customers/{customer_id}
+
+call the api with curl:
+```shell
+curl -X 'GET' \
+  'http://localhost:81/apiws/v1/customers/7' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer put_token_here'
+```
+
+
+- The user will be able to **read customers by id by commands orders** if he has a valid token.
 
 url: /apiws/v1/customers/{customer_id}/orders
 
@@ -171,7 +177,6 @@ def read_root():
 
 # routes clients
 
-# La liste des clients issue du CRM est accessible via l’API REST : /customers.
 @app.get(f"{API_PREFIX}/customers", tags=["customers"])
 @token_required
 def get_customers(token: Annotated[str, Depends(token_auth_scheme)]):
@@ -194,7 +199,10 @@ def get_customers(token: Annotated[str, Depends(token_auth_scheme)]):
 @token_required
 def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
     """
-
+    Get a customer by id
+    :param customer_id:
+    :param token:
+    :return: json response
     """
     response = requests.get(API_CLIENT + "/" + str(customer_id))
     if type(response.json()) == dict:
@@ -204,14 +212,12 @@ def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_sche
     else:
         return {"status": "error", "message": "Custommer not found"}
 
-    # La liste des commandes d’un client est accessible via l’API REST /customers/<customer id>/orders
-
-
+    
 @app.get(f"{API_PREFIX}/customers/{{customer_id}}/orders", tags=["customers"])
 @token_required
 def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
     """
-    Get a customer by id
+    Get a customer by id by commands orders
     :param customer_id:
     :param token:
     :return: json response
@@ -226,42 +232,23 @@ def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_sche
         return {"status": "error", "message": "Custommer not found"}
 
 
-# ----------------------en cours----------------------
-# La liste de produits d’une commande est accessible via l’API REST /customers/<customer id>/orders/<order id>/products.
 @app.get(f"{API_PREFIX}/customers/{{customer_id}}/orders/{{order_id}}/products", tags=["customers"])
 @token_required
 def get_customer(customer_id: int, order_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
     """
-    Get a customer by id
+    Get a customer by id and product by product id and detail product
     :param customer_id:
     :param order_id:
     :param token:
     :return: json response
     """
-    # response1 = requests.get(API_PRODUCT + "/" + str(order_id)+ "/products")
-    response1 = requests.get(API_PRODUCT + "/" + str(order_id))
-    print(response1)
-    response = requests.get(API_CLIENT + "/" + str(customer_id) + "/orders")
-    print(response)
+    response1 = requests.get(API_CLIENT + "/" + str(customer_id))
+    response = requests.get(API_PRODUCT + "/" + str(order_id))
     if type(response.json()) == dict and type(response1.json()) == dict:
-        return response.json(), response1.json()  # ["id"]
-    if type(response.json()) == list:  # and type(response1.json()) == list:
-        return response.json()  # , response1.json()["id"]
-        # text = response.text
-        # data = json.loads(text)
-        # print(data)
-        # recupData = []
-        # reqId = data[1]
-        # recupData.append(reqId)
-        # print(recupData[0])
-        # id = recupData[0]
-        # return {"id": id}
-        # return response.json()#["id"]#[1] trouver le moyen pourresponce1  response.json()[1],
+        return response1.json()["name"], response1.json()["id"], response.json()["details"], response.json()["stock"], response.json()["id"]
     else:
         return {"status": "error", "message": "Custommer not found"}
 
-
-# ----------------------en cours----------------------
 
 # routes produits
 

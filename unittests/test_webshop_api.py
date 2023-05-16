@@ -42,19 +42,24 @@ def test_get_customers(client):
     assert response.status_code == 200
     assert type(response.json()) == list
 
-
 def test_get_customers_id(client):
     headers = {"Authorization":"Bearer admin"}
     response = client.get("/apiws/v1/customers/15", headers=headers)
     assert response.status_code == 200
     assert type(response.json()) == dict
 
+def test_get_customers_id_by_orders(client):
+    headers = {"Authorization":"Bearer admin"}
+    response = client.get("/apiws/v1/customers/15/orders", headers=headers)
+    assert response.status_code == 200
+    assert type(response.json()) == dict
 
-# def test_get_customers_id_order_id_product(client):
-#     headers = {"Authorization":"Bearer admin"}
-#     response = client.get("/apiws/v1/customers/7/orders/7/products", headers=headers)
-#     assert response.status_code == 200
-#     assert type(response.json()) == dict
+def test_get_customers_id_order_id_product(client):
+    headers = {"Authorization":"Bearer admin"}
+    response = client.get("/apiws/v1/customers/7/orders/7/products", headers=headers)
+    assert response.status_code == 200
+    assert type(response.json()) == dict
+
 
 # test products
 def test_get_products(client):
@@ -72,31 +77,31 @@ def test_get_product_does_not_exist(client):
     assert response.json() == {'status': 'error', 'message': 'Product not found'}
 
 
-# def test_get_product_exists(client, user_token):
-#     headers = {"Authorization": "Bearer " + user_token}
-#     response = client.get("/api/v1/products/5", headers=headers)
-#     assert response.status_code == 200
-#     assert type(response.json()) == dict
-#     assert response.json() == {'createdAt': '2023-02-20T01:12:28.696Z', 'name': 'Jacquelyn Hyatt',
-#                                'details': {'price': '662.00',
-#                                            'description': 'Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals',
-#                                            'color': 'violet'}, 'stock': 67002, 'id': '5'}
+def test_get_product_exists(client):
+    headers = {"Authorization": "Bearer admin"}
+    response = client.get("/apiws/v1/products/5", headers=headers)
+    assert response.status_code == 200
+    assert type(response.json()) == dict
+    assert response.json() == {'createdAt': '2023-02-20T01:12:28.696Z', 'name': 'Jacquelyn Hyatt',
+                               'details': {'price': '662.00',
+                                           'description': 'Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals',
+                                           'color': 'violet'}, 'stock': 67002, 'id': '5'}
 
 
-# def test_get_product_stock_does_not_exist(client, user_token):
-#     headers = {"Authorization": "Bearer " + user_token}
-#     response = client.get("/api/v1/products/1/stock", headers=headers)
-#     assert response.status_code == 200
-#     assert type(response.json()) == dict
-#     assert response.json() == {'status': 'error', 'message': 'Product not found'}
+def test_get_product_stock_does_not_exist(client):
+    headers = {"Authorization": "Bearer admin"}
+    response = client.get("/apiws/v1/products/1/stock", headers=headers)
+    assert response.status_code == 200
+    assert type(response.json()) == dict
+    assert response.json() == {'status': 'error', 'message': 'Product not found'}
 
 
-# def test_get_product_stock_exists(client, user_token):
-#     headers = {"Authorization": "Bearer " + user_token}
-#     response = client.get("/api/v1/products/5/stock", headers=headers)
-#     assert response.status_code == 200
-#     assert type(response.json()) == int
-#     assert response.json() == 67002
+def test_get_product_stock_exists(client):
+    headers = {"Authorization": "Bearer admin"}
+    response = client.get("/apiws/v1/products/5/stock", headers=headers)
+    assert response.status_code == 200
+    assert type(response.json()) == int
+    assert response.json() == 67002
 
 
 if __name__ == '__main__':
