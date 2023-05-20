@@ -1,21 +1,18 @@
 """
 MSPR 4 - Webshop API
 """
-import json
-import requests
-import logging
-import uvicorn
-# from email.header import Header
 from functools import wraps
 from typing import Annotated
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.security import HTTPBearer
 from urllib.parse import unquote
+
+import requests
+import uvicorn
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security import HTTPBearer
+
 from database.database import Db
 from utilities.token_func import encode_token, decode_token
 
-
-# api mise à disposition dans le sujet
 # api clients
 API_CLIENT = "https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers"
 # api produits
@@ -199,7 +196,7 @@ def admin_required(func):
 
     @wraps(func)
     async def wrapper(*args, **kwargs):
-        token = kwargs.get('token') #or Header(None)
+        token = kwargs.get('token')  # or Header(None)
         if not token:
             raise HTTPException(status_code=401, detail='Token is missing')
         if token.credentials != "admin":
@@ -208,6 +205,7 @@ def admin_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
 
 def token_required(func):
     """
@@ -218,7 +216,7 @@ def token_required(func):
 
     @wraps(func)
     async def wrapper(*args, **kwargs):
-        token = kwargs.get('token') #or Header(None)
+        token = kwargs.get('token')  # or Header(None)
         if not token:
             raise HTTPException(status_code=401, detail='Token is missing')
         token_decoded = decode_token(token.credentials)
@@ -261,7 +259,7 @@ def get_customers(token: Annotated[str, Depends(token_auth_scheme)]):
     if type(response.json()) == list:
         return response.json()
     else:
-        return {"status": "error", "message": "Custommer not found"}
+        return {"status": "error", "message": "Customer not found"}
 
 
 @app.get(f"{API_PREFIX}/customers/{{customer_id}}", tags=["customers"])
@@ -279,9 +277,9 @@ def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_sche
     if type(response.json()) == list:
         return response.json()
     else:
-        return {"status": "error", "message": "Custommer not found"}
+        return {"status": "error", "message": "Customer not found"}
 
-    
+
 @app.get(f"{API_PREFIX}/customers/{{customer_id}}/orders", tags=["customers"])
 @token_required
 def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
@@ -298,7 +296,7 @@ def get_customer(customer_id: int, token: Annotated[str, Depends(token_auth_sche
     if type(response.json()) == list:
         return response.json()
     else:
-        return {"status": "error", "message": "Custommer not found"}
+        return {"status": "error", "message": "Customer not found"}
 
 
 @app.get(f"{API_PREFIX}/customers/{{customer_id}}/orders/{{order_id}}/products", tags=["customers"])
@@ -314,7 +312,8 @@ def get_customer(customer_id: int, order_id: int, token: Annotated[str, Depends(
     response1 = requests.get(API_CLIENT + "/" + str(customer_id))
     response = requests.get(API_PRODUCT + "/" + str(order_id))
     if type(response.json()) == dict and type(response1.json()) == dict:
-        return response1.json()["name"], response1.json()["id"], response.json()["details"], response.json()["stock"], response.json()["id"]
+        return response1.json()["name"], response1.json()["id"], response.json()["details"], response.json()["stock"], \
+            response.json()["id"]
     else:
         return {"status": "error", "message": "Custommer not found"}
 
@@ -364,11 +363,12 @@ def get_product_stock(product_id: int, token: Annotated[str, Depends(token_auth_
     else:
         return {"status": "error", "message": "Product not found"}
 
+
 # Token routes
 
 @app.post(f"{API_PREFIX}/create-token/{{token_id}}/{{mdp}}", tags=["Token"])
 @admin_required
-def create_user(token_id: int, mdp: str, token: Annotated[str, Depends(token_auth_scheme)]):
+def create_token(token_id: int, mdp: str, token: Annotated[str, Depends(token_auth_scheme)]):
     """
     Create a Token
     :param token_id:
@@ -389,7 +389,7 @@ def create_user(token_id: int, mdp: str, token: Annotated[str, Depends(token_aut
 
 @app.delete(f"{API_PREFIX}/delete-token/{{token_id}}", tags=["Token"])
 @admin_required
-def delete_user(token_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
+def delete_token(token_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
     """
     Delete a Token
     :param token_id:
@@ -408,4 +408,3 @@ if __name__ == "__main__":
     # logging.basicConfig(filename='server.log', level=logging.INFO)
     uvicorn.run(app, host="0.0.0.0", port=81, log_level="debug", access_log=True)
     # uvicorn.run(app)
-
