@@ -5,23 +5,23 @@ import json
 import requests
 import logging
 import uvicorn
+# from email.header import Header
 from functools import wraps
 from typing import Annotated
 from fastapi import FastAPI, Depends, HTTPException, status
-# from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
 from fastapi.security import HTTPBearer
+from urllib.parse import unquote
+from database.database import Db
+from utilities.token_func import encode_token, decode_token
+
 
 # api mise à disposition dans le sujet
 # api clients
 API_CLIENT = "https://615f5fb4f7254d0017068109.mockapi.io/api/v1/customers"
 # api produits
 API_PRODUCT = "https://615f5fb4f7254d0017068109.mockapi.io/api/v1/products"
-
+# prefixe Url
 API_PREFIX = "/apiws/v1"
-
-# Partie sécurité à tester
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Partie sécurité
 token_auth_scheme = HTTPBearer()
@@ -119,6 +119,39 @@ curl -X 'GET' \
     -H 'Authorization: Bearer put_token_here'
 ```
 
+## Token
+
+You will be able to **create / delete / update token** if you have the admin rights
+
+- The admin will be able to **create a token** if he has the correct rights.
+
+**description:**s
+when this api is called, the token will be created and sent to db for webshop.
+
+
+
+url: /api/v1/create-token/{token_id}/{token}
+
+call the api with curl:
+```shell
+curl -X 'POST' \
+    'http://localhost:82/api/v1/create-token/1/mot_de_passe' \
+    -H 'accept: application/json' \
+    -H 'Authorization: Bearer admin'
+```
+
+- The admin will be able to **delete a token** if he has the correct rights.
+
+url: /api/v1/delete-token/{token_id}
+
+call the api with curl:
+```shell
+curl -X 'DELETE' \
+    'http://localhost:82/api/v1/delete-token/1' \
+    -H 'accept: application/json' \
+    -H 'Authorization: Bearer admin'
+```
+
 """
 
 tags_metadata = [
@@ -129,6 +162,10 @@ tags_metadata = [
     {
         "name": "products",
         "description": "Manage products.",
+    },
+    {
+        "name": "Token",
+        "description": "Manage token.",
     }
 ]
 
@@ -143,9 +180,17 @@ app = FastAPI(
     openapi_tags=tags_metadata
 )
 
+db = Db('data/database', clear=False)
+# db.__enter__()
+db.create_tables()
 
-# token
-def token_required(func):
+
+@app.on_event("shutdown")
+def shutdown_event():
+    db.__exit__(None, None, None)
+
+
+def admin_required(func):
     """
     Decorator to check if the user is admin
     :param func:
@@ -154,12 +199,36 @@ def token_required(func):
 
     @wraps(func)
     async def wrapper(*args, **kwargs):
-        token = kwargs.get('token')  # or Header(None)
+        token = kwargs.get('token') #or Header(None)
         if not token:
             raise HTTPException(status_code=401, detail='Token is missing')
         if token.credentials != "admin":
             raise HTTPException(status_code=403, detail='You are not admin')
 
+        return func(*args, **kwargs)
+
+    return wrapper
+
+def token_required(func):
+    """
+    Decorator to check if the token is valid
+    :param func:
+    :return:
+    """
+
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        token = kwargs.get('token') #or Header(None)
+        if not token:
+            raise HTTPException(status_code=401, detail='Token is missing')
+        token_decoded = decode_token(token.credentials)
+        if token_decoded == 1:
+            raise HTTPException(status_code=401, detail='Token has expired')
+        elif token_decoded == 2:
+            raise HTTPException(status_code=401, detail='Token is not valid')
+        if db.get_token(token_decoded) is False:
+            raise HTTPException(status_code=403,
+                                detail='Token has been deleted and has no rights to access this resource')
         return func(*args, **kwargs)
 
     return wrapper
@@ -175,7 +244,7 @@ def read_root():
     return {"message": "Welcome to the MSPR API Webshop"}
 
 
-# routes clients
+# Customers routes
 
 @app.get(f"{API_PREFIX}/customers", tags=["customers"])
 @token_required
@@ -250,9 +319,8 @@ def get_customer(customer_id: int, order_id: int, token: Annotated[str, Depends(
         return {"status": "error", "message": "Custommer not found"}
 
 
-# routes produits
+# Products routes
 
-# La liste des produits issue de l’ERP est accessible via l’API REST : /products.
 @app.get(f"{API_PREFIX}/products", tags=["products"])
 @token_required
 def get_products(token: Annotated[str, Depends(token_auth_scheme)]):
@@ -265,7 +333,6 @@ def get_products(token: Annotated[str, Depends(token_auth_scheme)]):
     return response.json()
 
 
-# Le détail d’un produit peut être accessible via l’API REST : /products/<product id>
 @app.get(f"{API_PREFIX}/products/{{product_id}}", tags=["products"])
 @token_required
 def get_product(product_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
@@ -282,7 +349,6 @@ def get_product(product_id: int, token: Annotated[str, Depends(token_auth_scheme
         return {"status": "error", "message": "Product not found"}
 
 
-# l'etat des stock par produit
 @app.get(f"{API_PREFIX}/products/{{product_id}}/stock", tags=["products"])
 @token_required
 def get_product_stock(product_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
@@ -297,6 +363,50 @@ def get_product_stock(product_id: int, token: Annotated[str, Depends(token_auth_
         return response.json()["stock"]
     else:
         return {"status": "error", "message": "Product not found"}
+
+# Token routes
+
+@app.post(f"{API_PREFIX}/create-token/{{token_id}}/{{mdp}}", tags=["Token"])
+@admin_required
+def create_user(token_id: int, mdp: str, token: Annotated[str, Depends(token_auth_scheme)]):
+    """
+    Create a Token
+    :param token_id:
+    :param mdp:
+    :param token:
+    :return:
+    """
+    try:
+        decoded_mdp = unquote(mdp)
+        token = encode_token(decoded_mdp)
+        if db.insert_token(token_id, token) is False:
+            return {"status": "error", "message": f"Token with id {token_id} already exists on the database"}
+        print(db.get_token(1))
+        print(db.get_token(2))
+        print(db.get_token(3))
+        print(db.get_token(4))
+        print(db.get_token(5))
+        return {"status": "success",
+                "message": f"Token with id {token_id} has been created"}
+    except Exception as e:
+        return {"status": "error", "message": e.__repr__()}
+
+
+@app.delete(f"{API_PREFIX}/delete-token/{{token_id}}", tags=["Token"])
+@admin_required
+def delete_user(token_id: int, token: Annotated[str, Depends(token_auth_scheme)]):
+    """
+    Delete a Token
+    :param token_id:
+    :param token:
+    :return:
+    """
+    try:
+        if db.delete_user(token_id) is False:
+            return {"status": "error", "message": f"User with id {token_id} does not exist on the database"}
+        return {"status": "success", "message": f"User with id {token_id} has been deleted"}
+    except Exception as e:
+        return {"status": "error", "message": e.__repr__()}
 
 
 if __name__ == "__main__":

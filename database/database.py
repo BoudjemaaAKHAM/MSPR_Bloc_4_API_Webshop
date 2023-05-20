@@ -8,27 +8,29 @@ class Db:
     """
 
     def __init__(self, db_name, clear=False):
-        self.db_name = db_name
-        self.conn = None
-        self.cursor = None
-        self.clear = clear
+       if os.path.exists(db_name) and clear:
+           os.remove(db_name)
+       self.conn = sqlite3.connect(db_name, check_same_thread=False)
+       self.cursor = self.conn.cursor()
+       self.clear = clear
 
-    def __enter__(self):
-        db_path = os.path.join(os.getcwd(), self.db_name)
-        if self.clear:
-            os.remove(db_path)
-        self.conn = sqlite3.connect(db_path, check_same_thread=False)
-        self.cursor = self.conn.cursor()
-        return self
+    # def __init__(self, db_name, clear=False):
+    #     self.db_name = db_name
+    #     self.conn = None
+    #     self.cursor = None
+    #     self.clear = clear
+
+    # def __enter__(self):
+    #     db_path = os.path.join(os.getcwd(), self.db_name)
+    #     if self.clear:
+    #         os.remove(db_path)
+    #     self.conn = sqlite3.connect(db_path, check_same_thread=False)
+    #     self.cursor = self.conn.cursor()
+    #     return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
 
-    # def __init__(self, db_name, clear=False):
-    #    if os.path.exists(db_name) and clear:
-    #        os.remove(db_name)
-    #    self.conn = sqlite3.connect(db_name, check_same_thread=False)
-    #    self.cursor = self.conn.cursor()
 
     def create_tables(self):
         """
@@ -82,8 +84,28 @@ class Db:
         :return:
         """
         query = '''DELETE FROM tokens WHERE id = ?'''
-        # si l'utilisateur n'existe pas
+        # si le token n'existe pas
         if self.get_token(token_id) is None:
             return False
         self.cursor.execute(query, (token_id,))
         self.conn.commit()
+
+
+# db = Db(db_name="database",clear=True)
+
+# # db.__enter__()
+
+# db.create_tables()
+
+# from utilities import token_func
+
+# token = token_func.encode_token("sebastien")
+# print(token)
+
+# db.insert_token(1,token)
+
+# print(db.get_token(1))
+
+# from utilities import token_func
+
+# print(token_func.decode_token(db.get_token(1)[1]))
