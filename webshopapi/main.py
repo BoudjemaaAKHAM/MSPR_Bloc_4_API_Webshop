@@ -181,7 +181,7 @@ app = FastAPI(
 )
 
 db = Db('data/database', clear=False)
-# db.__enter__()
+db.__enter__()
 db.create_tables()
 
 
