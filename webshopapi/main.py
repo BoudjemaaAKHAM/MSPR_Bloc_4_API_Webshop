@@ -381,11 +381,6 @@ def create_user(token_id: int, mdp: str, token: Annotated[str, Depends(token_aut
         token = encode_token(decoded_mdp)
         if db.insert_token(token_id, token) is False:
             return {"status": "error", "message": f"Token with id {token_id} already exists on the database"}
-        print(db.get_token(1))
-        print(db.get_token(2))
-        print(db.get_token(3))
-        print(db.get_token(4))
-        print(db.get_token(5))
         return {"status": "success",
                 "message": f"Token with id {token_id} has been created"}
     except Exception as e:
