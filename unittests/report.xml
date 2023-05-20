@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="10" failures="2" skipped="0" tests="15" time="1.007" timestamp="2023-05-20T15:57:47.505356" hostname="DESKTOP-VF4F0QE"><testcase classname="unittests.test_database" name="test_create_tables" time="0.002"><error message="failed on setup with &quot;AttributeError: 'Db' object has no attribute '__enter__'. Did you mean: '__ne__'?&quot;">@pytest.fixture(scope="module")
+    def db():
+        db = Db('data/database', clear=False)
+&gt;       db.__enter__()
+E       AttributeError: 'Db' object has no attribute '__enter__'. Did you mean: '__ne__'?
+
+unittests\test_database.py:9: AttributeError</error></testcase><testcase classname="unittests.test_utilities_token_func" name="test_encode_token" time="0.004" /><testcase classname="unittests.test_utilities_token_func" name="test_decode_token" time="0.002" /><testcase classname="unittests.test_webshop_api" name="test_root" time="0.020" /><testcase classname="unittests.test_webshop_api" name="test_get_customers" time="0.008"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585B1F1C0&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_customers_id" time="0.010"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585B1D120&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_customers_id_by_orders" time="0.010"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585C47CA0&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_customers_id_order_id_product" time="0.007"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585C3CBE0&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_products" time="0.006"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585C49210&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_does_not_exist" time="0.006"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585B1D120&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_exists" time="0.006"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585AE9240&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_stock_does_not_exist" time="0.008"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585BD3760&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_get_product_stock_exists" time="0.007"><error message="failed on setup with &quot;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">client = &lt;starlette.testclient.TestClient object at 0x0000020585BD2710&gt;
+
+    @pytest.fixture
+    def token_token(client):
+        db.delete_token(99)
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/99/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:26: AssertionError</error></testcase><testcase classname="unittests.test_webshop_api" name="test_create_token" time="0.007"><failure message="assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000020585C50AF0&gt;
+
+    def test_create_token(client):
+        headers = {"Authorization": "Bearer admin"}
+        response = client.post("/apiws/v1/create-token/98/test", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+unittests\test_webshop_api.py:112: AssertionError</failure></testcase><testcase classname="unittests.test_webshop_api" name="test_delete_token" time="0.007"><failure message="assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">client = &lt;starlette.testclient.TestClient object at 0x0000020585C65000&gt;
+
+    def test_delete_token(client):
+        headers = {"Authorization": "Bearer admin"}
+        response = client.delete("/apiws/v1/create-token/98", headers=headers)
+&gt;       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+unittests\test_webshop_api.py:119: AssertionError</failure></testcase></testsuite></testsuites>

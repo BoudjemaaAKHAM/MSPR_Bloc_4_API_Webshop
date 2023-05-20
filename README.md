@@ -1,6 +1,6 @@
-## MSPR_Bloc_4
+# MSPR_Bloc_4_API_webshop
 
-Repo git pour la mise en situation professionnelle reconstituée du bloc de compétences 4.
+Ce repository contient le code source de l'API Webshop.
 
 ## Constitution du groupe :
 
@@ -10,84 +10,129 @@ Repo git pour la mise en situation professionnelle reconstituée du bloc de comp
 - Jean-Daniel SPADAZZI
 - Sébastien GLORIES
 
+### Résumé de l'API Revendeur :
+
+L'API Webshop gere les demande du site internet. authentifier par un token, elle permet d'acceder aux partie gestion des clients (customers) et a la partie produit et ces details (products). 
+
+### Pratiques de développement (gitflow) :
+
+- La branche main est la branche de production.
+- La branche preprod est la branche de pré-production.
+- Les branches de développement sont les branches nomées par les noms des développeurs. Chaque développeur a sa branche
+  de développement pour développer les fonctionnalités qui lui sont assignées.
+- Les branches nomées fix sont les branches de correction de bugs. Elles sont créées à partir de la branche de
+  développement du développeur qui a corrigé le bug.
+- Les branches nomées test sont les branches de test. Elles sont créées à partir de la branche de développement du
+  développeur qui a développé la fonctionnalité à tester.
+
 # utilisation de l'application
 
-## Prérequis
+1- Cloner le repository : (Demander l'accès au repository à l'un des membres du groupe)
 
-```sh
-pip install -r requirements.txt
+```bash
+git clone https://github.com/BoudjemaaAKHAM/MSPR_Bloc_4_API_Webshop.git
+```
+2- Créer un environnement virtuel.
+
+3- Installer localement l'application :
+
+```bash
+RUN pip install -e .
 ```
 
-## Lancer l'application
+4- Lancer l'application :
 
-```sh
-python -m api.main
-```
+```bash
+python -m webshopapi.main
+``` 
 
-## Les APIs sont accessibles à l'adresse suivante :
-
+5- les routes de l'API et la documentation sont disponibles à l'adresse suivante :
 http://localhost:81/docs
 
-## Docker
+6- Pour lancer les tests unitaires :
 
-### Build (se mettre dans le dossier racine du projet) :
+```bash
+py -m pytest ./unittests -v --junit-xml ./unittests/report.xml
+```
 
-```sh
+<!-- 7- lancer les tests unitaires avec coverage :
+
+```bash
+py -m pytest ./unittests -v --junit-xml ./unittests/report.xml --cov=. --cov-report=html
+``` -->
+
+### Utilisation de l'application avec Docker :
+
+1- Créer l'image Docker :
+
+```bash
 docker build -t webshop_api -f ./deployment/Dockerfile .
 ```
 
-### Lance le container :
+2- Lancer l'application :
 
-```sh
-docker run -p 443:443 webshop_api
+```bash
+docker run -p 445:445 webshop_api
 ```
 
-# Kubernetes
+3- les routes de l'API et la documentation sont disponibles à l'adresse suivante :
+https://localhost:445/docs
 
-## Prérequis
+### Push sur DockerHub :
+
+1- Se connecter à DockerHub :
+
+```bash
+docker login -username=boudjemaa
+```
+
+Saisir le token qui est dans le fichier .dockerhub_token
+
+2- Tagger l'image :
+
+```bash
+docker tag webshop_api boudjemaa/webshop_api:latest
+```
+
+3- Pusher l'image :
+
+```bash
+docker push boudjemaa/webshop_api:latest
+```
+
+### Run container on production server
+
+```bash
+docker pull boudjemaa/webshop_api:latest
+```
+
+```bash
+docker run -d --name webshopapi --restart=always -p 442:442 boudjemaa/webshop_api
+```
+
+## Utilisation de l'application avec Kubernetes :
+
+### Prérequis
 
 - minikube
 - kubectl
 
-## Lancement du cluster
+### Lancement du cluster
 
 ```sh
 minikube start
 ```
 
-## Déploiement de l'application
+### Déploiement de l'application
 
 ```sh
 kubectl apply -f deployment/k8s-deployment.yaml
 ```
 
-## Accès à l'application
+### Accès à l'application
 
 ```sh
 minikube service webshop-api
 ```
 
 ou via lens (https://k8slens.dev/) application desktop pour kubernetes
-
-#### Note
-
-pour push une image docker sur dockerhub, il faut se connecter à mon dockerhub via la commande :
-
-```sh
-docker login --username=boudjemaa
-```
-
-Saisir le token qui est dans le fichier .dockerhub_token
-
-puis créer un tag pour l'image docker :
-
-```sh
-docker tag webshop_api boudjemaa/webshop_api:latest
-```
-
-puis push l'image sur dockerhub :
-
-```sh
-docker push boudjemaa/webshop_api:latest
-```
-

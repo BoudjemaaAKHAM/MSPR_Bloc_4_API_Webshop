@@ -24,12 +24,6 @@ class Db:
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
 
-    # def __init__(self, db_name, clear=False):
-    #    if os.path.exists(db_name) and clear:
-    #        os.remove(db_name)
-    #    self.conn = sqlite3.connect(db_name, check_same_thread=False)
-    #    self.cursor = self.conn.cursor()
-
     def create_tables(self):
         """
         Create tables
@@ -82,7 +76,7 @@ class Db:
         :return:
         """
         query = '''DELETE FROM tokens WHERE id = ?'''
-        # si l'utilisateur n'existe pas
+        # si le token n'existe pas
         if self.get_token(token_id) is None:
             return False
         self.cursor.execute(query, (token_id,))
