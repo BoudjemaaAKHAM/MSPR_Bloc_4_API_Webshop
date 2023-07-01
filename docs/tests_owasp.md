@@ -1,7 +1,8 @@
-## Pour les test OWASP nous allons verrifier certains de ces test sur notre application API.
+# Pour les test OWASP nous allons verrifier certains de ces test sur notre application API.
 
-1 - Dans un premier temps nous allons commencer avec le test OWASP N°5
-    ce test concerne le manque d'acces et de controle
+## 1 - Dans un premier temps nous allons commencer avec le test OWASP N°5
+
+Ce test concerne le manque d'acces et de controle
 
 pour cela nous allons tester a partir du DOM pour voir si on peut modifier des éléments:
 
@@ -52,4 +53,18 @@ Conclusion je pense que nous respectons le point N°5 du référentiel OWASP
 
 
 
-2 -
+## 2 - concernant le test Owasp n°6 sur l'oublie de metre en place de systeme de sécurité.
+
+Pour constater si nous avons fait un oublie lors de la redaction du code source sur la securité nous allons ouvrir le code source de notre page "``localhost:81/docs``" de notre framework fastapi 
+
+
+
+![img.png](imgs/ow08.png)
+
+
+en tapant sur internet ``Ctrl+u`` 
+
+
+![img.png](imgs/ow07.png)
+
+Conclusion: nous avons passer ce test n°6 dans un premier temps parce que nous avons pris en compte et mis en place un systeme de securité. Mais aussi car le framework ``fastapi`` a pris en charge la page source html que l'on peut voir ci dessus et on constate que l'on a pas acces a grand chose a part le liens css l'icone et un fichier javascript concernant la licence d'utilisation.
